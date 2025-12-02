@@ -86,7 +86,7 @@ def build_weather_card(data: dict) -> ft.Card:
                                     ),
                                 ],
                             ),
-                            ft.Icon(ft.icons.LOCATION_ON_OUTLINED, color=ft.Colors.AMBER_200),
+                            ft.Icon(ft.Icons.LOCATION_ON_OUTLINED, color=ft.Colors.AMBER_200),
                         ],
                     ),
                     ft.Row(
@@ -99,7 +99,7 @@ def build_weather_card(data: dict) -> ft.Card:
                                 width=96,
                                 height=96,
                                 fit=ft.ImageFit.CONTAIN,
-                                error_content=ft.Icon(ft.icons.CLOUD_OUTLINED, size=72),
+                                error_content=ft.Icon(ft.Icons.CLOUD_OUTLINED, size=72),
                             ),
                             ft.Column(
                                 spacing=4,
@@ -117,16 +117,16 @@ def build_weather_card(data: dict) -> ft.Card:
                     ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_AROUND,
                         controls=[
-                            build_stat_block(ft.icons.ARROW_CIRCLE_DOWN_OUTLINED, "Mín", temp_min),
-                            build_stat_block(ft.icons.ARROW_CIRCLE_UP_OUTLINED, "Máx", temp_max),
-                            build_stat_block(ft.icons.DEVICE_THERMOSTAT, "Sensación", feels_like),
+                            build_stat_block(ft.Icons.ARROW_CIRCLE_DOWN_OUTLINED, "Mín", temp_min),
+                            build_stat_block(ft.Icons.ARROW_CIRCLE_UP_OUTLINED, "Máx", temp_max),
+                            build_stat_block(ft.Icons.DEVICE_THERMOSTAT, "Sensación", feels_like),
                         ],
                     ),
                     ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_AROUND,
                         controls=[
-                            build_stat_block(ft.icons.WATER_DROP_OUTLINED, "Humedad", f"{data.get('humidity', '-')}%"),
-                            build_stat_block(ft.icons.AIR_OUTLINED, "Viento", format_wind(data.get("wind_speed"), units)),
+                            build_stat_block(ft.Icons.WATER_DROP_OUTLINED, "Humedad", f"{data.get('humidity', '-')}%"),
+                            build_stat_block(ft.Icons.AIR_OUTLINED, "Viento", format_wind(data.get("wind_speed"), units)),
                         ],
                     ),
                 ],
@@ -148,7 +148,7 @@ def main(page: ft.Page) -> None:
     city_input = ft.TextField(
         label="Ciudad",
         hint_text="Ej: Madrid,ES",
-        prefix_icon=ft.icons.SEARCH,
+        prefix_icon=ft.Icons.SEARCH,
         autofocus=True,
         expand=True,
     )
@@ -209,7 +209,7 @@ def main(page: ft.Page) -> None:
             toggle_loading(False)
 
     search_button = ft.ElevatedButton(
-        text="Buscar", icon=ft.icons.SEARCH, on_click=handle_search, height=48
+        text="Buscar", icon=ft.Icons.SEARCH, on_click=handle_search, height=48
     )
 
     city_input.on_submit = handle_search
