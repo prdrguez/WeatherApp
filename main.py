@@ -27,11 +27,11 @@ def build_stat_block(icon: str, label: str, value: str) -> ft.Container:
     return ft.Container(
         content=ft.Row(
             controls=[
-                ft.Icon(icon, size=18, color=ft.colors.AMBER_200),
+                ft.Icon(icon, size=18, color=ft.Colors.AMBER_200),
                 ft.Column(
                     spacing=2,
                     controls=[
-                        ft.Text(label, size=12, color=ft.colors.GREY_400),
+                        ft.Text(label, size=12, color=ft.Colors.GREY_400),
                         ft.Text(value, weight=ft.FontWeight.BOLD, size=14),
                     ],
                 ),
@@ -50,8 +50,8 @@ def build_weather_card(data: dict) -> ft.Card:
 
     return ft.Card(
         elevation=8,
-        color=ft.colors.with_opacity(0.08, ft.colors.WHITE),
-        surface_tint_color=ft.colors.BLUE_GREY_900,
+        color=ft.Colors.with_opacity(0.08, ft.Colors.WHITE),
+        surface_tint_color=ft.Colors.BLUE_GREY_900,
         shape=ft.RoundedRectangleBorder(radius=24),
         content=ft.Container(
             padding=24,
@@ -59,7 +59,7 @@ def build_weather_card(data: dict) -> ft.Card:
             gradient=ft.LinearGradient(
                 begin=ft.alignment.top_left,
                 end=ft.alignment.bottom_right,
-                colors=[ft.colors.with_opacity(0.7, ft.colors.BLUE_900), ft.colors.BLUE_GREY_900],
+                colors=[ft.Colors.with_opacity(0.7, ft.Colors.BLUE_900), ft.Colors.BLUE_GREY_900],
             ),
             border_radius=20,
             content=ft.Column(
@@ -82,11 +82,11 @@ def build_weather_card(data: dict) -> ft.Card:
                                         if data.get("timestamp")
                                         else "",
                                         size=12,
-                                        color=ft.colors.GREY_400,
+                                        color=ft.Colors.GREY_400,
                                     ),
                                 ],
                             ),
-                            ft.Icon(ft.icons.LOCATION_ON_OUTLINED, color=ft.colors.AMBER_200),
+                            ft.Icon(ft.icons.LOCATION_ON_OUTLINED, color=ft.Colors.AMBER_200),
                         ],
                     ),
                     ft.Row(
@@ -108,7 +108,7 @@ def build_weather_card(data: dict) -> ft.Card:
                                     ft.Text(
                                         data.get("description", ""),
                                         size=16,
-                                        color=ft.colors.GREY_300,
+                                        color=ft.Colors.GREY_300,
                                     ),
                                 ],
                             ),
@@ -144,7 +144,7 @@ def main(page: ft.Page) -> None:
     page.vertical_alignment = ft.MainAxisAlignment.START
     page.padding = 24
 
-    status_text = ft.Text(color=ft.colors.RED_200, size=12)
+    status_text = ft.Text(color=ft.Colors.RED_200, size=12)
     city_input = ft.TextField(
         label="Ciudad",
         hint_text="Ej: Madrid,ES",
@@ -166,7 +166,7 @@ def main(page: ft.Page) -> None:
 
     progress_ring = ft.ProgressRing(visible=False, width=24, height=24)
 
-    def set_status(message: str, color: str = ft.colors.RED_200) -> None:
+    def set_status(message: str, color: str = ft.Colors.RED_200) -> None:
         status_text.value = message
         status_text.color = color
         status_text.update()
@@ -204,7 +204,7 @@ def main(page: ft.Page) -> None:
             update_weather_card(None)
         else:
             update_weather_card(weather)
-            set_status("Actualizado correctamente", ft.colors.GREEN_ACCENT_200)
+            set_status("Actualizado correctamente", ft.Colors.GREEN_ACCENT_200)
         finally:
             toggle_loading(False)
 
@@ -222,12 +222,12 @@ def main(page: ft.Page) -> None:
             ft.Text(
                 "Consulta el clima actual con un estilo moderno.",
                 size=14,
-                color=ft.colors.GREY_400,
+                color=ft.Colors.GREY_400,
             ),
             ft.Container(
                 padding=16,
                 border_radius=20,
-                bgcolor=ft.colors.with_opacity(0.08, ft.colors.WHITE),
+                bgcolor=ft.Colors.with_opacity(0.08, ft.Colors.WHITE),
                 content=ft.Column(
                     spacing=12,
                     controls=[
