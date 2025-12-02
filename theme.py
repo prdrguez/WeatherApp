@@ -9,14 +9,14 @@ class WeatherTheme:
 
     # Colores base
     BG_GRADIENT = ["#0f172a", "#1f2937", "#111827"]
-    CARD_COLOR = ft.colors.with_opacity(0.1, ft.colors.WHITE)
-    CARD_TINT = ft.colors.BLUE_GREY_900
+    CARD_COLOR = ft.Colors.with_opacity(0.1, ft.Colors.WHITE)
+    CARD_TINT = ft.Colors.BLUE_GREY_900
     ACCENT_ORANGE = "#f97316"
     ACCENT_SOFT = "#fb923c"
 
     # Texto
-    TEXT_PRIMARY = ft.colors.WHITE
-    TEXT_SECONDARY = ft.colors.GREY_400
+    TEXT_PRIMARY = ft.Colors.WHITE
+    TEXT_SECONDARY = ft.Colors.GREY_400
 
     # Dimensiones
     PADDING = 16

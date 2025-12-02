@@ -42,7 +42,7 @@ def create_city_chip(city: str, temperature: float | int | None, units: str, on_
             spacing=6,
             controls=[ft.Text(city), ft.Text(temp_label, color=WeatherTheme.TEXT_SECONDARY, size=12)],
         ),
-        bgcolor=ft.colors.with_opacity(0.15, WeatherTheme.ACCENT_SOFT),
+        bgcolor=ft.Colors.with_opacity(0.15, WeatherTheme.ACCENT_SOFT),
         on_click=on_click,
     )
 
@@ -84,7 +84,7 @@ def create_main_weather_card(
         label="Ciudad",
         prefix_icon=ft.icons.LOCATION_ON_OUTLINED,
         border_radius=WeatherTheme.RADIUS,
-        bgcolor=ft.colors.with_opacity(0.1, ft.colors.WHITE),
+        bgcolor=ft.Colors.with_opacity(0.1, ft.Colors.WHITE),
         filled=True,
         on_submit=lambda e: on_search(e.control.value),
     )
@@ -99,7 +99,7 @@ def create_main_weather_card(
     search_button = ft.ElevatedButton(
         text="Buscar",
         icon=ft.icons.SEARCH,
-        bgcolor=ft.colors.with_opacity(0.2, ft.colors.WHITE),
+        bgcolor=ft.Colors.with_opacity(0.2, ft.Colors.WHITE),
         color=WeatherTheme.TEXT_PRIMARY,
         on_click=lambda _: on_search(city_field.value),
     )
@@ -129,13 +129,13 @@ def create_main_weather_card(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[city_field, refresh_button],
                 ),
-                ft.Text("Última actualización, Hoy", size=12, color=ft.colors.WHITE70),
+                ft.Text("Última actualización, Hoy", size=12, color=ft.Colors.WHITE70),
                 ft.Row(
                     spacing=12,
                     vertical_alignment=ft.CrossAxisAlignment.END,
                     controls=[
-                        ft.Text(temp_main, size=46, weight=ft.FontWeight.W_800, color=ft.colors.WHITE),
-                        ft.Text(description, size=16, color=ft.colors.WHITE70),
+                        ft.Text(temp_main, size=46, weight=ft.FontWeight.W_800, color=ft.Colors.WHITE),
+                        ft.Text(description, size=16, color=ft.Colors.WHITE70),
                         search_button,
                     ],
                 ),
