@@ -8,6 +8,15 @@ from typing import Any, Dict, List
 import requests
 
 from config import AIR_POLLUTION_URL, API_KEY, BASE_URL, FORECAST_URL
+"""Funciones para consultar el clima actual desde OpenWeatherMap."""
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Any, Dict
+
+import requests
+
+from config import API_KEY, BASE_URL
 
 
 class WeatherServiceError(Exception):
@@ -48,6 +57,11 @@ def get_current_weather(city: str, units: str = "metric", lang: str = "es") -> D
         raise ValueError("Por favor ingresa una ciudad para consultar el clima.")
 
     _ensure_api_key()
+    if not API_KEY or API_KEY == "TU_API_KEY_AQUI":
+        raise ValueError(
+            "API key no configurada. Establece la variable de entorno OPENWEATHER_API_KEY "
+            "o reemplaza API_KEY en config.py."
+        )
 
     params = {
         "q": city,
@@ -80,6 +94,7 @@ def get_current_weather(city: str, units: str = "metric", lang: str = "es") -> D
         return {
             "city": data["name"],
             "country": sys_info.get("country", ""),
+            "country": data.get("sys", {}).get("country", ""),
             "temp": main_info.get("temp"),
             "temp_min": main_info.get("temp_min"),
             "temp_max": main_info.get("temp_max"),
@@ -239,3 +254,6 @@ def get_dashboard_weather(city: str, units: str = "metric", lang: str = "es") ->
         "rain_probability": rain_probability,
     }
 
+        }
+    except KeyError as exc:  # falta de campos esenciales
+        raise WeatherServiceError("Respuesta incompleta de la API de clima.") from exc
