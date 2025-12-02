@@ -1,6 +1,7 @@
 # WeatherApp
 
 Aplicación de escritorio en Python + Flet para consultar el clima actual con un diseño de dashboard moderno y modular.
+Aplicación de escritorio en Python + Flet para consultar el clima actual con un diseño de dashboard moderno.
 
 ## Requisitos
 
@@ -48,4 +49,6 @@ Escribe una ciudad (por ejemplo, `Madrid,ES` o `Buenos Aires,AR`), elige unidade
 - `components/`: Conjunto de tarjetas y gráficos (clima, lluvia, AQI, etc.).
 - `pages/home.py`: Construye el layout del dashboard completo.
 - `main.py`: Punto de entrada y orquestación de la página.
+- `weather_service.py`: Lógica de consulta y parseo de datos de OpenWeatherMap.
+- `main.py`: Interfaz Flet y dashboard del clima.
 - `requirements.txt`: Dependencias del proyecto.
