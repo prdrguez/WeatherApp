@@ -9,8 +9,31 @@ from theme import WeatherTheme
 from utils import UNITS_LABELS, format_temperature, format_wind
 
 
-def create_info_card(title: str, value: str, icon: str, subtitle: str | None = None) -> ft.Container:
-    subtitle_control = ft.Text(subtitle, size=12, color=WeatherTheme.TEXT_SECONDARY) if subtitle else None
+def create_info_card(
+    title: str,
+    value: str,
+    icon: str,
+    subtitle: str | None = None,
+) -> ft.Container:
+    subtitle_control = (
+        ft.Text(subtitle, size=12, color=WeatherTheme.TEXT_SECONDARY)
+        if subtitle
+        else None
+    )
+
+    controls = [
+        ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            controls=[
+                ft.Text(title, size=14, weight=ft.FontWeight.W_600),
+                ft.Icon(icon, color=WeatherTheme.ACCENT_SOFT),
+            ],
+        ),
+        ft.Text(value, size=20, weight=ft.FontWeight.W_700),
+    ]
+    if subtitle_control:
+        controls.append(subtitle_control)
+
     return ft.Container(
         padding=12,
         width=180,
@@ -20,34 +43,38 @@ def create_info_card(title: str, value: str, icon: str, subtitle: str | None = N
         content=ft.Column(
             spacing=6,
             alignment=ft.MainAxisAlignment.START,
-            controls=[
-                ft.Row(
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                    controls=[
-                        ft.Text(title, size=14, weight=ft.FontWeight.W_600),
-                        ft.Icon(icon, color=WeatherTheme.ACCENT_SOFT),
-                    ],
-                ),
-                ft.Text(value, size=20, weight=ft.FontWeight.W_700),
-                subtitle_control,
-            ],
+            controls=controls,
         ),
     )
 
 
-def create_city_chip(city: str, temperature: float | int | None, units: str, on_click: Callable[[ft.ControlEvent], None]) -> ft.Chip:
+def create_city_chip(
+    city: str,
+    temperature: float | int | None,
+    units: str,
+    on_click: Callable[[ft.ControlEvent], None],
+) -> ft.Chip:
     temp_label = format_temperature(temperature, units)
     return ft.Chip(
         label=ft.Row(
             spacing=6,
-            controls=[ft.Text(city), ft.Text(temp_label, color=WeatherTheme.TEXT_SECONDARY, size=12)],
+            controls=[
+                ft.Text(city),
+                ft.Text(temp_label, color=WeatherTheme.TEXT_SECONDARY, size=12),
+            ],
         ),
-        bgcolor=ft.Colors.with_opacity(0.15, WeatherTheme.ACCENT_SOFT),
+        bgcolor=ft.colors.with_opacity(0.15, WeatherTheme.ACCENT_SOFT),
         on_click=on_click,
     )
 
 
-def create_weather_day_card(day_name: str, icon_url: str, temp: float | int | None, description: str, units: str) -> ft.Container:
+def create_weather_day_card(
+    day_name: str,
+    icon_url: str,
+    temp: float | int | None,
+    description: str,
+    units: str,
+) -> ft.Container:
     return ft.Container(
         width=120,
         padding=12,
@@ -61,8 +88,17 @@ def create_weather_day_card(day_name: str, icon_url: str, temp: float | int | No
             controls=[
                 ft.Text(day_name, weight=ft.FontWeight.BOLD),
                 ft.Image(src=icon_url, width=56, height=56, fit=ft.ImageFit.CONTAIN),
-                ft.Text(format_temperature(temp, units), size=18, weight=ft.FontWeight.W_600),
-                ft.Text(description, size=12, color=WeatherTheme.TEXT_SECONDARY, text_align=ft.TextAlign.CENTER),
+                ft.Text(
+                    format_temperature(temp, units),
+                    size=18,
+                    weight=ft.FontWeight.W_600,
+                ),
+                ft.Text(
+                    description,
+                    size=12,
+                    color=WeatherTheme.TEXT_SECONDARY,
+                    text_align=ft.TextAlign.CENTER,
+                ),
             ],
         ),
     )
@@ -76,6 +112,7 @@ def create_main_weather_card(
     on_search: Callable[[str], None],
     on_refresh: Callable[[], None],
 ) -> ft.Container:
+    """Tarjeta principal (naranja) con ciudad, temp y chips de favoritas."""
     temp_main = format_temperature(weather_data.get("temp"), units)
     description = weather_data.get("description", "")
 
@@ -84,7 +121,7 @@ def create_main_weather_card(
         label="Ciudad",
         prefix_icon=ft.Icons.LOCATION_ON_OUTLINED,
         border_radius=WeatherTheme.RADIUS,
-        bgcolor=ft.Colors.with_opacity(0.1, ft.Colors.WHITE),
+        bgcolor=ft.colors.with_opacity(0.1, ft.colors.WHITE),
         filled=True,
         on_submit=lambda e: on_search(e.control.value),
     )
@@ -99,12 +136,12 @@ def create_main_weather_card(
     search_button = ft.ElevatedButton(
         text="Buscar",
         icon=ft.Icons.SEARCH,
-        bgcolor=ft.Colors.with_opacity(0.2, ft.Colors.WHITE),
+        bgcolor=ft.colors.with_opacity(0.2, ft.colors.WHITE),
         color=WeatherTheme.TEXT_PRIMARY,
         on_click=lambda _: on_search(city_field.value),
     )
 
-    chips = []
+    chips: list[ft.Chip] = []
     if favorites:
         for city_name, temp in favorites:
             chips.append(
@@ -116,6 +153,41 @@ def create_main_weather_card(
                 )
             )
 
+    controls: list[ft.Control] = [
+        ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            controls=[city_field, refresh_button],
+        ),
+        ft.Text("Última actualización, Hoy", size=12, color=ft.colors.WHITE70),
+        ft.Row(
+            spacing=12,
+            vertical_alignment=ft.CrossAxisAlignment.END,
+            controls=[
+                ft.Text(
+                    temp_main,
+                    size=46,
+                    weight=ft.FontWeight.W_800,
+                    color=ft.colors.WHITE,
+                ),
+                ft.Text(
+                    description,
+                    size=16,
+                    color=ft.colors.WHITE70,
+                ),
+                search_button,
+            ],
+        ),
+    ]
+
+    if chips:
+        controls.append(
+            ft.Row(
+                spacing=8,
+                controls=chips,
+                alignment=ft.MainAxisAlignment.START,
+            )
+        )
+
     return ft.Container(
         padding=20,
         width=520,
@@ -124,31 +196,13 @@ def create_main_weather_card(
         shadow=WeatherTheme.BOX_SHADOW,
         content=ft.Column(
             spacing=12,
-            controls=[
-                ft.Row(
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                    controls=[city_field, refresh_button],
-                ),
-                ft.Text("Última actualización, Hoy", size=12, color=ft.Colors.WHITE70),
-                ft.Row(
-                    spacing=12,
-                    vertical_alignment=ft.CrossAxisAlignment.END,
-                    controls=[
-                        ft.Text(temp_main, size=46, weight=ft.FontWeight.W_800, color=ft.Colors.WHITE),
-                        ft.Text(description, size=16, color=ft.Colors.WHITE70),
-                        search_button,
-                    ],
-                ),
-                ft.Row(
-                    spacing=8,
-                    controls=chips,
-                    alignment=ft.MainAxisAlignment.START,
-                ),
-        ],
+            controls=controls,
+        ),
     )
 
 
 def create_sun_card(sunrise: str, sunset: str) -> ft.Container:
+    """Tarjeta con horarios de amanecer y atardecer."""
     return ft.Container(
         width=220,
         padding=16,
@@ -162,7 +216,10 @@ def create_sun_card(sunrise: str, sunset: str) -> ft.Container:
                 ft.Row(
                     spacing=12,
                     controls=[
-                        ft.Icon(ft.Icons.WB_SUNNY_OUTLINED, color=WeatherTheme.ACCENT_SOFT),
+                        ft.Icon(
+                            ft.Icons.WB_SUNNY_OUTLINED,
+                            color=WeatherTheme.ACCENT_SOFT,
+                        ),
                         ft.Column(
                             controls=[
                                 ft.Text(f"Amanecer: {sunrise}", size=13),
