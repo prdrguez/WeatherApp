@@ -54,12 +54,12 @@ class HomePage:
         current = self.weather_data.get("current", {})
         units = safe_get(current, "units", "metric")
         metrics = [
-            create_info_card("Humedad", f"{safe_get(current, 'humidity', '-')}%", ft.icons.WATER_DROP_OUTLINED),
-            create_info_card("Viento", format_wind(current.get("wind_speed"), units), ft.icons.AIR_OUTLINED),
-            create_info_card("Visibilidad", f"{safe_get(current, 'visibility', '-')} m", ft.icons.VISIBILITY_OUTLINED),
-            create_info_card("Presión", f"{safe_get(current, 'pressure', '-')} hPa", ft.icons.SPEED_OUTLINED),
-            create_info_card("Índice UV", str(safe_get(current, 'uvi', '-')), ft.icons.WB_SUNNY_OUTLINED),
-            create_info_card("Precipitación", f"{safe_get(current, 'precipitation', '-')}%", ft.icons.UMBRELLA_OUTLINED),
+            create_info_card("Humedad", f"{safe_get(current, 'humidity', '-')}%", ft.Icons.WATER_DROP_OUTLINED),
+            create_info_card("Viento", format_wind(current.get("wind_speed"), units), ft.Icons.AIR_OUTLINED),
+            create_info_card("Visibilidad", f"{safe_get(current, 'visibility', '-')} m", ft.Icons.VISIBILITY_OUTLINED),
+            create_info_card("Presión", f"{safe_get(current, 'pressure', '-')} hPa", ft.Icons.SPEED_OUTLINED),
+            create_info_card("Índice UV", str(safe_get(current, 'uvi', '-')), ft.Icons.WB_SUNNY_OUTLINED),
+            create_info_card("Precipitación", f"{safe_get(current, 'precipitation', '-')}%", ft.Icons.UMBRELLA_OUTLINED),
         ]
         return ft.Wrap(spacing=12, run_spacing=12, controls=metrics)
 
