@@ -19,12 +19,12 @@ def main(page: ft.Page) -> None:
     page.padding = 0
 
     # Estado / controles base
-    status_text = ft.Text(color=ft.colors.RED_200, size=12)
+    status_text = ft.Text(color=ft.Colors.RED_200, size=12)
     content_host = ft.Container(expand=True)
     loading_overlay = ft.Container(
         visible=False,
         alignment=ft.alignment.center,
-        bgcolor=ft.colors.with_opacity(0.25, ft.colors.BLACK),
+        bgcolor=ft.Colors.with_opacity(0.25, ft.Colors.BLACK),
         content=ft.ProgressRing(width=64, height=64, color=WeatherTheme.ACCENT_SOFT),
     )
 
@@ -43,7 +43,7 @@ def main(page: ft.Page) -> None:
 
     # --- Helpers de estado -------------------------------------------------
 
-    def set_status(message: str, color: str = ft.colors.RED_200) -> None:
+    def set_status(message: str, color: str = ft.Colors.RED_200) -> None:
         status_text.value = message
         status_text.color = color
         status_text.update()
@@ -76,7 +76,7 @@ def main(page: ft.Page) -> None:
         except (ValueError, WeatherServiceError) as exc:
             set_status(str(exc))
         else:
-            set_status("Datos actualizados", ft.colors.GREEN_ACCENT_200)
+            set_status("Datos actualizados", ft.Colors.GREEN_ACCENT_200)
             render_dashboard(data)
         finally:
             loading_overlay.visible = False
