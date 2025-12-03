@@ -187,8 +187,6 @@ def main(page: ft.Page) -> None:
     current_city = {"value": "Buenos Aires,AR"}
 
     def set_status(message: str, color: str = ft.colors.RED_200) -> None:
-        width=200,
-    )
 
     weather_container = ft.Container(content=None)
 
