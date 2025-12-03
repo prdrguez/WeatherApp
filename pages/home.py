@@ -7,7 +7,6 @@ import flet as ft
 
 from components.aqi_card import create_aqi_card
 from components.info_card import (
-    create_city_chip,
     create_info_card,
     create_main_weather_card,
     create_sun_card,
@@ -16,7 +15,7 @@ from components.info_card import (
 from components.rain_chart import create_rain_probability_chart
 from components.weather_chart import create_weather_chart
 from theme import WeatherTheme
-from utils import format_datetime, format_temperature, format_wind, get_day_name, safe_get
+from utils import format_datetime, format_wind, get_day_name, safe_get
 
 
 class HomePage:
@@ -35,9 +34,11 @@ class HomePage:
         self.on_refresh_callback = on_refresh_callback
 
     def _build_forecast_cards(self) -> ft.Row:
+        """Fila con los próximos días de pronóstico (máx. 5)."""
         forecast = self.weather_data.get("forecast", [])
         current_units = safe_get(self.weather_data.get("current", {}), "units", "metric")
-        cards = []
+        cards: list[ft.Control] = []
+
         for entry in forecast[:5]:
             cards.append(
                 create_weather_day_card(
@@ -48,20 +49,59 @@ class HomePage:
                     units=current_units,
                 )
             )
-        return ft.Row(spacing=12, controls=cards, wrap=True)
 
-    def _build_metrics(self) -> ft.Wrap:
+        return ft.Row(
+            spacing=12,
+            controls=cards,
+            alignment=ft.MainAxisAlignment.START,
+        )
+
+    def _build_metrics(self) -> ft.Column:
+        """Grilla simple (2 filas) de métricas: humedad, viento, etc."""
         current = self.weather_data.get("current", {})
         units = safe_get(current, "units", "metric")
+
         metrics = [
-            create_info_card("Humedad", f"{safe_get(current, 'humidity', '-')}%", ft.Icons.WATER_DROP_OUTLINED),
-            create_info_card("Viento", format_wind(current.get("wind_speed"), units), ft.Icons.AIR_OUTLINED),
-            create_info_card("Visibilidad", f"{safe_get(current, 'visibility', '-')} m", ft.Icons.VISIBILITY_OUTLINED),
-            create_info_card("Presión", f"{safe_get(current, 'pressure', '-')} hPa", ft.Icons.SPEED_OUTLINED),
-            create_info_card("Índice UV", str(safe_get(current, 'uvi', '-')), ft.Icons.WB_SUNNY_OUTLINED),
-            create_info_card("Precipitación", f"{safe_get(current, 'precipitation', '-')}%", ft.Icons.UMBRELLA_OUTLINED),
+            create_info_card(
+                "Humedad",
+                f"{safe_get(current, 'humidity', '-')}%",
+                ft.Icons.WATER_DROP_OUTLINED,
+            ),
+            create_info_card(
+                "Viento",
+                format_wind(current.get("wind_speed"), units),
+                ft.Icons.AIR_OUTLINED,
+            ),
+            create_info_card(
+                "Visibilidad",
+                f"{safe_get(current, 'visibility', '-')} m",
+                ft.Icons.VISIBILITY_OUTLINED,
+            ),
+            create_info_card(
+                "Presión",
+                f"{safe_get(current, 'pressure', '-')} hPa",
+                ft.Icons.SPEED_OUTLINED,
+            ),
+            create_info_card(
+                "Índice UV",
+                str(safe_get(current, "uvi", "-")),
+                ft.Icons.WB_SUNNY_OUTLINED,
+            ),
+            create_info_card(
+                "Precipitación",
+                f"{safe_get(current, 'precipitation', '-')}%",
+                ft.Icons.UMBRELLA_OUTLINED,
+            ),
         ]
-        return ft.Wrap(spacing=12, run_spacing=12, controls=metrics)
+
+        # Dos filas de 3 tarjetas cada una
+        row1 = ft.Row(spacing=12, controls=metrics[:3])
+        row2 = ft.Row(spacing=12, controls=metrics[3:])
+
+        return ft.Column(
+            spacing=12,
+            controls=[row1, row2],
+        )
 
     def build(self) -> ft.Control:
         current = self.weather_data.get("current", {})
@@ -92,28 +132,43 @@ class HomePage:
         layout = ft.Column(
             spacing=20,
             controls=[
+                # Fila superior: tarjeta principal + pronóstico
                 ft.Row(
                     spacing=16,
-                    wrap=True,
-                    controls=[main_card, ft.Column(spacing=12, controls=[self._build_forecast_cards()])],
+                    controls=[
+                        main_card,
+                        ft.Column(
+                            spacing=12,
+                            controls=[self._build_forecast_cards()],
+                        ),
+                    ],
+                    alignment=ft.MainAxisAlignment.START,
                 ),
+                # Fila central: gráfico + amanecer/atardecer
                 ft.Row(
                     spacing=16,
-                    wrap=True,
                     vertical_alignment=ft.CrossAxisAlignment.START,
                     controls=[
                         create_weather_chart(chart_data),
                         create_sun_card(sunrise or "-", sunset or "-"),
                     ],
+                    alignment=ft.MainAxisAlignment.START,
                 ),
+                # Fila inferior: métricas + lluvia + calidad de aire
                 ft.Row(
                     spacing=16,
-                    wrap=True,
                     vertical_alignment=ft.CrossAxisAlignment.START,
                     controls=[
-                        ft.Column(spacing=12, controls=[self._build_metrics(), create_rain_probability_chart(rain_probability)]),
+                        ft.Column(
+                            spacing=12,
+                            controls=[
+                                self._build_metrics(),
+                                create_rain_probability_chart(rain_probability),
+                            ],
+                        ),
                         create_aqi_card(air_quality),
                     ],
+                    alignment=ft.MainAxisAlignment.START,
                 ),
             ],
         )
@@ -121,6 +176,10 @@ class HomePage:
         return ft.Container(
             expand=True,
             padding=WeatherTheme.PADDING,
-            gradient=ft.LinearGradient(begin=ft.alignment.top_left, end=ft.alignment.bottom_right, colors=WeatherTheme.BG_GRADIENT),
+            gradient=ft.LinearGradient(
+                begin=ft.alignment.top_left,
+                end=ft.alignment.bottom_right,
+                colors=WeatherTheme.BG_GRADIENT,
+            ),
             content=layout,
         )
