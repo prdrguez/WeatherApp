@@ -24,4 +24,4 @@ class WeatherTheme:
     ELEVATION = 6
 
     # Sombras
-    BOX_SHADOW = ft.BoxShadow(blur_radius=18, color=ft.colors.with_opacity(0.25, ft.colors.BLACK))
+    BOX_SHADOW = ft.BoxShadow(blur_radius=18, color=ft.Colors.with_opacity(0.25, ft.Colors.BLACK))
