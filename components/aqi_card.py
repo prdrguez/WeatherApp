@@ -11,10 +11,15 @@ def create_aqi_card(aqi_data: dict) -> ft.Container:
     label = aqi_data.get("label", "Sin datos")
     components = aqi_data.get("components", {})
 
-    pollutants = []
+    pollutants: list[ft.Control] = []
     for key in ["pm10", "pm2_5", "o3", "co", "so2", "no2"]:
         val = components.get(key)
-        pollutants.append(ft.Text(f"{key.upper()}: {val if val is not None else '-'}", size=12))
+        pollutants.append(
+            ft.Text(
+                f"{key.upper()}: {val if val is not None else '-'}",
+                size=12,
+            )
+        )
 
     return ft.Container(
         bgcolor=WeatherTheme.CARD_COLOR,
@@ -33,18 +38,29 @@ def create_aqi_card(aqi_data: dict) -> ft.Container:
                         ft.CircleAvatar(
                             radius=32,
                             bgcolor=WeatherTheme.ACCENT_SOFT,
-                            content=ft.Text(str(value) if value is not None else "-", weight=ft.FontWeight.W_800),
+                            content=ft.Text(
+                                str(value) if value is not None else "-",
+                                weight=ft.FontWeight.W_800,
+                            ),
                         ),
                         ft.Column(
                             spacing=4,
                             controls=[
                                 ft.Text(label, size=16, weight=ft.FontWeight.W_600),
-                                ft.Text("Valores en µg/m³", size=12, color=WeatherTheme.TEXT_SECONDARY),
+                                ft.Text(
+                                    "Valores en µg/m³",
+                                    size=12,
+                                    color=WeatherTheme.TEXT_SECONDARY,
+                                ),
                             ],
                         ),
                     ],
                 ),
-                ft.Wrap(spacing=8, run_spacing=6, controls=pollutants),
+                # Antes: ft.Wrap(...). Ahora usamos una Column simple.
+                ft.Column(
+                    spacing=4,
+                    controls=pollutants,
+                ),
             ],
         ),
     )
