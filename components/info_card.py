@@ -139,8 +139,11 @@ def create_main_weather_card(
                         search_button,
                     ],
                 ),
-                ft.Wrap(run_spacing=8, spacing=8, controls=chips),
-            ],
+                ft.Row(
+                    spacing=8,
+                    controls=chips,
+                    alignment=ft.MainAxisAlignment.START,
+                ),
         ),
     )
 
