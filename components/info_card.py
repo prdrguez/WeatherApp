@@ -82,7 +82,7 @@ def create_main_weather_card(
     city_field = ft.TextField(
         value=city_value,
         label="Ciudad",
-        prefix_icon=ft.icons.LOCATION_ON_OUTLINED,
+        prefix_icon=ft.Icons.LOCATION_ON_OUTLINED,
         border_radius=WeatherTheme.RADIUS,
         bgcolor=ft.Colors.with_opacity(0.1, ft.Colors.WHITE),
         filled=True,
@@ -90,7 +90,7 @@ def create_main_weather_card(
     )
 
     refresh_button = ft.IconButton(
-        icon=ft.icons.REFRESH,
+        icon=ft.Icons.REFRESH,
         icon_color=WeatherTheme.TEXT_PRIMARY,
         on_click=lambda _: on_refresh(),
         tooltip="Actualizar",
@@ -98,7 +98,7 @@ def create_main_weather_card(
 
     search_button = ft.ElevatedButton(
         text="Buscar",
-        icon=ft.icons.SEARCH,
+        icon=ft.Icons.SEARCH,
         bgcolor=ft.Colors.with_opacity(0.2, ft.Colors.WHITE),
         color=WeatherTheme.TEXT_PRIMARY,
         on_click=lambda _: on_search(city_field.value),
@@ -159,7 +159,7 @@ def create_sun_card(sunrise: str, sunset: str) -> ft.Container:
                 ft.Row(
                     spacing=12,
                     controls=[
-                        ft.Icon(ft.icons.WB_SUNNY_OUTLINED, color=WeatherTheme.ACCENT_SOFT),
+                        ft.Icon(ft.Icons.WB_SUNNY_OUTLINED, color=WeatherTheme.ACCENT_SOFT),
                         ft.Column(
                             controls=[
                                 ft.Text(f"Amanecer: {sunrise}", size=13),
