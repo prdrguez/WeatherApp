@@ -144,7 +144,7 @@ def create_main_weather_card(
                     controls=chips,
                     alignment=ft.MainAxisAlignment.START,
                 ),
-        ),
+        ],
     )
 
 
